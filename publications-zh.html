@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>论文列表 · 闫磊</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Source+Sans+3:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap">
+<style>
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:26px}
+nav a{color:var(--on-navy-muted);border:0;font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase}
+nav a:hover,nav a.here{color:var(--on-navy)}
+@media (max-width:820px){nav{display:none}}
+:root{
+  --bg:#FFFFFF; --bg-2:#F5F7FB; --ink:#141B2A; --muted:#5B657A; --rule:#DDE2EB;
+  --navy:#0B1F44; --navy-2:#132B5C; --on-navy:#F3F5FA; --on-navy-muted:#A9B7D3;
+  --accent:#163A7A; --sky:#8CC2EE; --brass:#B9975B;
+  --f-display:"Cormorant Garamond","Noto Serif SC","Songti SC","SimSun",Georgia,serif;
+  --f-body:"Source Sans 3","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0B1120; --bg-2:#111A2E; --ink:#E7EBF3; --muted:#9AA6BD; --rule:#243049;
+  --navy:#07152F; --navy-2:#0D1F42; --accent:#9CC9F2; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0B1120; --bg-2:#111A2E; --ink:#E7EBF3; --muted:#9AA6BD; --rule:#243049;
+  --navy:#07152F; --navy-2:#0D1F42; --accent:#9CC9F2; color-scheme:dark }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1.0625rem;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--navy)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+a:hover{border-bottom-color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--sky);outline-offset:3px}
+h1,h2,h3{font-family:var(--f-display);font-weight:500;margin:0;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--navy);color:var(--on-navy)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.brand{font-family:var(--f-display);font-size:1.35rem;font-weight:600;letter-spacing:.02em;color:var(--on-navy);border:0}
+.top nav a{color:var(--on-navy-muted);border:0;font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin-left:26px}
+.top nav a:hover,.top nav a.here{color:var(--on-navy)}
+
+.head{background:linear-gradient(180deg,var(--navy),var(--navy-2));color:var(--on-navy)}
+.head .wrap{padding-block:48px 40px}
+.kicker{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-navy-muted);font-weight:500}
+.head h1{font-size:clamp(2.6rem,6vw,4.2rem);line-height:1;margin:12px 0 22px}
+.stats{display:flex;flex-wrap:wrap;gap:28px 48px}
+.stats div{min-width:0}
+.stats b{display:block;font-family:var(--f-display);font-size:2.4rem;line-height:1;font-weight:500;font-variant-numeric:lining-nums}
+.stats span{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-navy-muted);font-weight:500}
+.head .foot{margin-top:28px;color:var(--on-navy-muted);font-size:.95rem;max-width:70ch}
+.head .foot a{color:var(--on-navy);border-bottom-color:rgba(255,255,255,.35)}
+
+.filters{position:sticky;top:calc(env(safe-area-inset-top,0px) + 55px);z-index:4;background:var(--bg);border-bottom:1px solid var(--rule)}
+.filters .wrap{display:flex;flex-wrap:wrap;gap:8px 10px;padding-block:14px;align-items:center}
+.filters .lbl{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-right:8px}
+.chip{font:inherit;font-size:.9rem;padding:5px 14px;border:1px solid var(--rule);background:transparent;color:var(--ink);cursor:pointer;border-radius:999px}
+.chip[aria-pressed="true"]{background:var(--navy);color:var(--on-navy);border-color:var(--navy)}
+.chip:hover{border-color:var(--accent)}
+.count{margin-left:auto;font-size:.9rem;color:var(--muted);font-variant-numeric:tabular-nums}
+
+main .wrap{padding-block:16px 72px}
+ol.list{list-style:none;margin:0;padding:0;max-width:860px}
+li.yh{padding:40px 0 10px}
+li.yh h3{font-size:1.6rem}
+li.yh h3{font-size:2.2rem;color:var(--muted);font-weight:400;line-height:1}
+li.pub{display:grid;grid-template-columns:8rem minmax(0,1fr) 6.5rem;gap:20px;padding:20px 0;border-top:1px solid var(--rule)}
+.if{text-align:right;padding-top:2px;font-variant-numeric:lining-nums}
+.if b{display:block;font-family:var(--f-display);font-weight:500;font-size:2.3rem;line-height:1;color:var(--accent)}
+.if span{font-size:.7rem;letter-spacing:.2em;color:var(--muted)}
+li.lead .if b{color:var(--navy)}
+:root[data-theme="dark"] li.lead .if b{color:var(--accent)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) li.lead .if b{color:var(--accent)}}
+@media (max-width:640px){li.pub{grid-template-columns:1fr auto}.if{grid-column:2;grid-row:1}.role{grid-column:1;grid-row:1}li.pub>div:nth-child(2){grid-column:1/-1}.if b{font-size:1.8rem}}
+li.pub[hidden]{display:none}
+.role .y{display:block;margin-top:4px;font-size:.9rem;letter-spacing:0;text-transform:none;color:var(--muted);font-variant-numeric:tabular-nums}
+.role{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500;padding-top:6px}
+li.lead .role{color:var(--brass)}
+.pt{font-family:var(--f-display);font-size:1.4rem;line-height:1.28;font-weight:500}
+.pt a{color:var(--ink);border:0}
+.pt a:hover{color:var(--accent)}
+.pj{margin-top:6px;font-size:.95rem}
+.pj b{color:var(--accent);font-weight:600}
+.pj .zh{font-size:.78rem;color:var(--muted);margin-left:8px;letter-spacing:.06em;text-transform:uppercase}
+.pa{font-size:.9rem;color:var(--muted);margin-top:3px}
+.pa b{color:var(--ink);font-weight:600}
+.pn{font-size:.88rem;color:var(--muted);margin-top:4px}
+.legend{font-size:.88rem;color:var(--muted);max-width:860px;margin-top:28px;padding-top:16px;border-top:1px solid var(--rule)}
+@media (max-width:640px){li.pub{gap:4px 12px}.role{padding-top:0}li.yh h3{font-size:1.8rem}}
+footer{background:var(--navy);color:var(--on-navy-muted);font-size:.88rem}
+footer .wrap{padding-block:28px 44px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer a{color:var(--on-navy);border-bottom-color:rgba(255,255,255,.3)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="index-zh.html">闫 磊</a><nav aria-label="Sections"><ul><li><a href="index-zh.html">首页</a></li><li><a href="research-zh.html">研究</a></li><li><a href="publications-zh.html" class="here" aria-current="page">论文</a></li><li><a href="background-zh.html">经历</a></li><li><a href="service-zh.html">学术服务</a></li><li><a href="contact-zh.html">联系</a></li><li><a href="publications.html" lang="en">English</a></li></ul></nav></div></header>
+
+<section class="head"><div class="wrap">
+  <div class="kicker">闫磊 · 约翰斯·霍普金斯大学医学院</div>
+  <h1>论文列表</h1>
+  <div class="stats">
+    <div><b>45</b><span>同行评议论文</span></div>
+    <div><b>39</b><span>SCI 收录</span></div>
+    <div><b>21</b><span>第一 / 共同第一 / 通讯作者</span></div>
+    <div><b>309.8</b><span>SCI 累计影响因子</span></div>
+  </div>
+  <p class="foot">† 共同第一作者　* 共同通讯作者</p>
+</div></section>
+
+<div class="filters"><div class="wrap">
+  <span class="lbl">筛选</span>
+  <button class="chip" type="button" data-f="all" aria-pressed="true" id="f-all">全部</button>
+  <button class="chip" type="button" data-f="lead" id="f-lead">一作 / 通讯</button>
+  <button class="chip" type="button" data-f="spine" id="f-spine">脊柱与腰痛</button>
+  <button class="chip" type="button" data-f="oa" id="f-oa">骨关节炎与关节外科</button>
+  <button class="chip" type="button" data-f="regen" id="f-regen">再生医学</button>
+  <button class="chip" type="button" data-f="onc" id="f-onc">肿瘤与骨肿瘤</button>
+  <button class="chip" type="button" data-f="other" id="f-other">流行病学与其他</button>
+  <span class="count" id="count">45 篇</span>
+</div></div>
+
+<main><div class="wrap">
+<ol class="list" id="list">
+<li class="yh" data-g="lead"><h3>第一 / 共同第一 / 通讯作者</h3></li>
+<li class="pub lead" data-g="lead" data-role="F" data-cat="oa" data-y="2025">
+  <div class="role">第一作者<span class="y">2025</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1136/bmj-2025-085242" target="_blank" rel="noopener">Comparative efficacy and safety of exercise modalities in knee osteoarthritis: systematic review and network meta-analysis</a></div>
+    <div class="pj"><b>The BMJ</b> 391:e085242</div>
+    <div class="pa"><b>Yan L</b>†, Li D†, Xing D†, Fan Z, Du G, Jiu J, Li X, Estill J, Wang Q, Belal AA, Tian C, Li JJ, Li S, Liu H, Liu X, Ren Y, Yang Y, Chen J, Hu Y*, Ge L*, Wang B*</div><div class="pn">被 ACP Journal Club（<i>Annals of Internal Medicine</i>）收录；CNN 报道。</div>
+  </div>
+  <div class="if"><b>42.7</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="F" data-cat="oa" data-y="2023">
+  <div class="role">第一作者<span class="y">2023</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1001/jamanetworkopen.2022.53942" target="_blank" rel="noopener">Evaluation of comparative efficacy and safety of surgical approaches for total hip arthroplasty: a systematic review and network meta-analysis</a></div>
+    <div class="pj"><b>JAMA Network Open</b> 6(1):e2253942</div>
+    <div class="pa"><b>Yan L</b>†, Ge L†, Dong S, Saluja K, Li D, Reddy KS, Wang Q, Yao L, Li JJ, Roza da Costa B, Xing D*, Wang B*</div>
+  </div>
+  <div class="if"><b>13.353</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="F" data-cat="regen" data-y="2024">
+  <div class="role">第一作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1016/j.cej.2024.154432" target="_blank" rel="noopener">Exosomes derived from 3D-cultured MSCs alleviate knee osteoarthritis by promoting M2 macrophage polarization through miR-365a-5p and inhibiting TLR2/MyD88/NF-κB pathway</a></div>
+    <div class="pj"><b>Chemical Engineering Journal</b> 497:154432</div>
+    <div class="pa"><b>Yan L</b>†, Li D†, Li S†, Li JJ, Du G, Liu H, Zhang J, Li X, Fan Z, Jiu J, Li R, Kong N, Liu W*, Du Y*, Wang B*</div>
+  </div>
+  <div class="if"><b>13.3</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="F" data-cat="onc" data-y="2024">
+  <div class="role">第一作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1038/s41420-024-01946-z" target="_blank" rel="noopener">MiR-134-5p inhibits the malignant phenotypes of osteosarcoma via ITGB1/MMP2/PI3K/Akt pathway</a></div>
+    <div class="pj"><b>Cell Death Discovery</b> 10:193</div>
+    <div class="pa"><b>Yan L</b>†, Zhou R†, Feng Y†, Li R, Zhang L, Pan Y, Qiao X, Li P, Wei X, Xu C, Li Y, Niu X, Sun X*, Lv Z*, Tian Z*</div>
+  </div>
+  <div class="if"><b>10.4</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="onc" data-y="2024">
+  <div class="role">共同第一作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.7150/ijbs.90226" target="_blank" rel="noopener">PSME2 offers value as a biomarker of M1 macrophage infiltration in pan-cancer and inhibits osteosarcoma malignant phenotypes</a></div>
+    <div class="pj"><b>International Journal of Biological Sciences</b> 20(4):1452–1470</div>
+    <div class="pa">Li R†, <b>Yan L</b>†, Jiu J, Liu H, Li D, Li X, Zhang J, Li S, Fan Z, Lv Z, Zhu Y, Wang B*</div>
+  </div>
+  <div class="if"><b>11.7</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="regen" data-y="2022">
+  <div class="role">共同第一作者<span class="y">2022</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1007/s12015-022-10341-z" target="_blank" rel="noopener">Stem cell-based tissue engineering for the treatment of burn wounds: a systematic review of preclinical studies</a></div>
+    <div class="pj"><b>Stem Cell Reviews and Reports</b> 18(6):1926–1955</div>
+    <div class="pa">Lukomskyj AO†, Rao N†, <b>Yan L</b>†, Pye JS, Li H, Wang B*, Li JJ*</div>
+  </div>
+  <div class="if"><b>6.692</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="onc" data-y="2022">
+  <div class="role">共同第一作者<span class="y">2022</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.3389/fonc.2022.973712" target="_blank" rel="noopener">Identification of tumor antigens and immune subtypes in breast cancer for mRNA vaccine development</a></div>
+    <div class="pj"><b>Frontiers in Oncology</b> 12:973712</div>
+    <div class="pa">Li RQ†, Wang W†, <b>Yan L</b>†, Song LY, Guan X, Zhang W, Lian J*</div>
+  </div>
+  <div class="if"><b>5.738</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="oa" data-y="2023">
+  <div class="role">共同第一作者<span class="y">2023</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1186/s13075-023-03033-7" target="_blank" rel="noopener">The prevalence of hip osteoarthritis: a systematic review and meta-analysis</a></div>
+    <div class="pj"><b>Arthritis Research &amp; Therapy</b> 25:51</div>
+    <div class="pa">Fan Z†, <b>Yan L</b>†, Liu H†, Li X, Fan K, Liu Q*, Li JJ*, Wang B*</div>
+  </div>
+  <div class="if"><b>5.606</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="spine" data-y="2023">
+  <div class="role">共同第一作者<span class="y">2023</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.3389/fpubh.2023.1155225" target="_blank" rel="noopener">Exercise intervention for patients with chronic low back pain: a systematic review and network meta-analysis</a></div>
+    <div class="pj"><b>Frontiers in Public Health</b> 11:1155225</div>
+    <div class="pa">Li Y†, <b>Yan L</b>†, Hou L†, Zhang X, Zhao H, Yan C, Li X, Li Y, Chen X*, Ding X*</div>
+  </div>
+  <div class="if"><b>5.2</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="oa" data-y="2023">
+  <div class="role">共同第一作者<span class="y">2023</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1007/s10238-023-01063-8" target="_blank" rel="noopener">MicroRNA expression in osteoarthritis: a meta-analysis</a></div>
+    <div class="pj"><b>Clinical and Experimental Medicine</b> 23(7):3737–3749</div>
+    <div class="pa">Liu H†, <b>Yan L</b>†, Li X†, Li D, Wang G, Shen NN*, Li JJ*, Wang B*</div>
+  </div>
+  <div class="if"><b>5.057</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CC" data-cat="oa" data-y="2025">
+  <div class="role">共同通讯作者<span class="y">2025</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1002/ksa.70177" target="_blank" rel="noopener">Clinical effects of different remnant-preserving versus standard nonpreserving techniques in anterior cruciate ligament reconstruction: a systematic review and meta-analysis</a></div>
+    <div class="pj"><b>Knee Surgery, Sports Traumatology, Arthroscopy</b></div>
+    <div class="pa">Liu X†, Li X†, Li D†, Fan Z, Liu H, Liu H, Ge Z, Zhang J, Jiu J, Li R, Zhuang Z, Li S, Du G, Jia L, Ren Y, Li JJ*, <b>Yan L</b>*, Wang B*</div>
+  </div>
+  <div class="if"><b>5.0</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="F" data-cat="oa" data-y="2021">
+  <div class="role">第一作者<span class="y">2021</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1007/s00167-020-06231-x" target="_blank" rel="noopener">Interference screws are more likely to perform better than cortical button and cross-pin fixation for hamstring autograft in ACL reconstruction: a Bayesian network meta-analysis</a></div>
+    <div class="pj"><b>Knee Surgery, Sports Traumatology, Arthroscopy</b> 29(6):1850–1861</div>
+    <div class="pa"><b>Yan L</b>†, Li JJ†, Zhu Y, Liu H, Liu R, Zhao B*, Wang B*</div>
+  </div>
+  <div class="if"><b>4.342</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="F" data-cat="onc" data-y="2023">
+  <div class="role">第一作者<span class="y">2023</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1007/s12094-023-03218-1" target="_blank" rel="noopener">Development of a novel vasculogenic mimicry-associated gene signature for the prognostic assessment of osteosarcoma patients</a></div>
+    <div class="pj"><b>Clinical and Translational Oncology</b> 25(12):3501–3518</div>
+    <div class="pa"><b>Yan L</b>†, Li R†, Li D, Zhu Y*, Lv Z*, Wang B*</div>
+  </div>
+  <div class="if"><b>3.4</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="onc" data-y="2024">
+  <div class="role">共同第一作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1038/s41598-024-58899-7" target="_blank" rel="noopener">CD74 as a prognostic and M1 macrophage infiltration marker in a comprehensive pan-cancer analysis</a></div>
+    <div class="pj"><b>Scientific Reports</b> 14:8125</div>
+    <div class="pa">Li RQ†, <b>Yan L</b>†, Zhang L, Zhao Y*, Lian J*</div>
+  </div>
+  <div class="if"><b>4.6</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="onc" data-y="2024">
+  <div class="role">共同第一作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1038/s41598-024-62991-3" target="_blank" rel="noopener">Genomic characterization reveals distinct mutational landscapes and therapeutic implications between different molecular subtypes of triple negative breast cancer</a></div>
+    <div class="pj"><b>Scientific Reports</b> 14:12386</div>
+    <div class="pa">Li RQ†, <b>Yan L</b>†, Zhang L, Ma HX, Wang HW, Bu P, Xi YF*, Lian J*</div>
+  </div>
+  <div class="if"><b>4.6</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="onc" data-y="2025">
+  <div class="role">共同第一作者<span class="y">2025</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1038/s41598-025-06748-6" target="_blank" rel="noopener">DDTC-Cu(I) inhibits human osteosarcoma cells growth by repressing MET/PI3K/AKT signaling pathway</a></div>
+    <div class="pj"><b>Scientific Reports</b> 15:21780</div>
+    <div class="pa">Zhou R†, <b>Yan L</b>†, Zhang K, Chen S, Yu Y, Wei X, Pan Y, Xu C, Sun X, Lv Z, Li P, Qiao X, Feng Y*, Tian Z*</div>
+  </div>
+  <div class="if"><b>3.9</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="oa" data-y="2023">
+  <div class="role">共同第一作者<span class="y">2023</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1007/s00264-023-05687-z" target="_blank" rel="noopener">Failure modes after anterior cruciate ligament reconstruction: a systematic review and meta-analysis</a></div>
+    <div class="pj"><b>International Orthopaedics</b> 47(3):719–734</div>
+    <div class="pa">Li X†, <b>Yan L</b>†, Li D, Fan Z, Liu H, Wang G, Jiu J, Yang Z*, Li JJ*, Wang B*</div>
+  </div>
+  <div class="if"><b>3.479</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="oa" data-y="2023">
+  <div class="role">共同第一作者<span class="y">2023</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1186/s12891-023-06925-6" target="_blank" rel="noopener">Efficacy and safety of corticosteroids, hyaluronic acid, and PRP and combination therapy for knee osteoarthritis: a systematic review and network meta-analysis</a></div>
+    <div class="pj"><b>BMC Musculoskeletal Disorders</b> 24:926</div>
+    <div class="pa">Qiao X†, <b>Yan L</b>†, Feng Y†, Li X, Zhang K, Lv Z, Xu C, Zhao S, Liu F, Yang X*, Tian Z*</div>
+  </div>
+  <div class="if"><b>2.3</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="spine" data-y="2024">
+  <div class="role">共同第一作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1177/21925682231168577" target="_blank" rel="noopener">Endoscopic lumbar interbody fusion, minimally invasive transforaminal lumbar interbody fusion, and open transforaminal lumbar interbody fusion for the treatment of lumbar degenerative diseases: a systematic review and network meta-analysis</a></div>
+    <div class="pj"><b>Global Spine Journal</b> 14(1):295–305</div>
+    <div class="pa">Hu X†, <b>Yan L</b>†, Jin X, Liu H, Chai J, Zhao B*</div>
+  </div>
+  <div class="if"><b>2.230</b><span>IF</span></div></li>
+<li class="pub lead" data-g="lead" data-role="CF" data-cat="spine" data-y="2025">
+  <div class="role">共同第一作者<span class="y">2025</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1111/os.14371" target="_blank" rel="noopener">Comparison of the outcomes of endoscopic posterolateral interbody fusion and lateral interbody fusion in the treatment of lumbar degenerative disease: a systematic review and network meta-analysis</a></div>
+    <div class="pj"><b>Orthopaedic Surgery</b> 17(5):1287–1297</div>
+    <div class="pa">Hu X†, <b>Yan L</b>†, Chai J†, Zhao X, Liu H, Zhu J, Chai H, Zhao Y*, Zhao B*</div>
+  </div>
+  <div class="if"><b>2.1</b><span>IF</span></div></li>
+<li class="yh" data-g="co"><h3>合作作者</h3></li>
+<li class="pub " data-g="co" data-role="C" data-cat="regen" data-y="2024">
+  <div class="role">合作作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1016/j.bioactmat.2024.06.029" target="_blank" rel="noopener">Tissue-engineered mesenchymal stem cell constructs alleviate tendinopathy by suppressing vascularization</a></div>
+    <div class="pj"><b>Bioactive Materials</b> 36:474–489</div>
+    <div class="pa">Li D†, Jiu J†, Liu H†, Yan X, Li X, <b>Yan L</b>, Zhang J, Fan Z, Li S, Du G, Li JJ, Du Y, Liu W*, Wang B*</div>
+  </div>
+  <div class="if"><b>23.6</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="spine" data-y="2026">
+  <div class="role">合作作者<span class="y">2026</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1038/s41467-026-75423-9" target="_blank" rel="noopener">Dorsal horn DCC amplification loop induced by endplate osteoclasts generates chronic nociplastic low back pain in male mice</a></div>
+    <div class="pj"><b>Nature Communications</b> 17:8631</div>
+    <div class="pa">Pan D, Shen M, Abatan E, Zheng J, Nasser P, Laudier DM, Kong C, <b>Yan L</b>, Qiu Z, Iatridis JC, Wan M, Zheng J, Taylor BK, Cao X*</div>
+  </div>
+  <div class="if"><b>18.1</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="regen" data-y="2023">
+  <div class="role">合作作者<span class="y">2023</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1016/j.cej.2022.138806" target="_blank" rel="noopener">Self-assembly of gelatin microcarrier-based MSC microtissues for spinal cord injury repair</a></div>
+    <div class="pj"><b>Chemical Engineering Journal</b> 451:138806</div>
+    <div class="pa">Liu H†, Yan X†, Jiu J, Li JJ, Zhang Y, Wang G, Li D, <b>Yan L</b>, Du Y*, Zhao B*, Wang B*</div>
+  </div>
+  <div class="if"><b>16.744</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="regen" data-y="2025">
+  <div class="role">合作作者<span class="y">2025</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1002/adhm.202404925" target="_blank" rel="noopener">3D mechanical response stem cell complex repairs spinal cord injury by promoting neurogenesis and regulating tissue homeostasis</a></div>
+    <div class="pj"><b>Advanced Healthcare Materials</b> 14(7):e2404925</div>
+    <div class="pa">Jiu J†, Liu H†, Li D†, Li X, Zhang J, <b>Yan L</b>, Fan Z, Li S, Du G, Li JJ, Wu A, Liu W, Du Y*, Zhao B*, Wang B*</div>
+  </div>
+  <div class="if"><b>10.0</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="regen" data-y="2024">
+  <div class="role">合作作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1088/1758-5090/ad3a13" target="_blank" rel="noopener">3D bioprinting approaches for spinal cord injury repair</a></div>
+    <div class="pj"><b>Biofabrication</b> 16(3)</div>
+    <div class="pa">Jiu J†, Liu H†, Li D†, Li J, Liu L, Yang W, <b>Yan L</b>, Li S, Zhang J, Li X, Li JJ*, Wang B*</div>
+  </div>
+  <div class="if"><b>9.0</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="regen" data-y="2023">
+  <div class="role">合作作者<span class="y">2023</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1089/ten.TEB.2022.0178" target="_blank" rel="noopener">Biomaterials for tissue-engineered treatment of tendinopathy in animal models: a systematic review</a></div>
+    <div class="pj"><b>Tissue Engineering Part B: Reviews</b> 29(4):387–413</div>
+    <div class="pa">Li D†, Wang G†, Li J, <b>Yan L</b>, Liu H, Jiu J, Li X, Li JJ*, Wang B*</div>
+  </div>
+  <div class="if"><b>7.376</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="regen" data-y="2023">
+  <div class="role">合作作者<span class="y">2023</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1089/ten.TEB.2023.0050" target="_blank" rel="noopener">Preclinical studies and clinical trials on cell-based treatments for meniscus regeneration</a></div>
+    <div class="pj"><b>Tissue Engineering Part B: Reviews</b> 29(6):634–670</div>
+    <div class="pa">Li X†, Li D†, Li J, Wang G, <b>Yan L</b>, Liu H, Jiu J, Li JJ*, Wang B*</div>
+  </div>
+  <div class="if"><b>7.376</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="regen" data-y="2022">
+  <div class="role">合作作者<span class="y">2022</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1089/ten.TEB.2020.0267" target="_blank" rel="noopener">Animal models for treating spinal cord injury using biomaterials-based tissue engineering strategies</a></div>
+    <div class="pj"><b>Tissue Engineering Part B: Reviews</b> 28(1):79–100</div>
+    <div class="pa">Li JJ†, Liu H†, Zhu Y, <b>Yan L</b>, Liu R, Wang G, Wang B*, Zhao B*</div>
+  </div>
+  <div class="if"><b>7.376</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="other" data-y="2022">
+  <div class="role">合作作者<span class="y">2022</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.3389/fcimb.2022.1018897" target="_blank" rel="noopener">Gut microbiota and fecal metabolic signatures in rat models of disuse-induced osteoporosis</a></div>
+    <div class="pj"><b>Frontiers in Cellular and Infection Microbiology</b> 12:1018897</div>
+    <div class="pa">Qiao X†, Zhang K†, Li X†, Lv Z†, Wei W, Zhou R, <b>Yan L</b>, Pan Y, Yang S, Sun X, Li P, Xu C, Feng Y*, Tian Z*</div>
+  </div>
+  <div class="if"><b>6.073</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="other" data-y="2025">
+  <div class="role">合作作者<span class="y">2025</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1016/j.jot.2024.10.013" target="_blank" rel="noopener">Risk-stratified lifetime risk and incidence of hip fracture and falls in middle-aged and elderly Chinese population: the China Health and Retirement Longitudinal Study</a></div>
+    <div class="pj"><b>Journal of Orthopaedic Translation</b> 50:174–184</div>
+    <div class="pa">Du G†, Fan Z†, Fan K†, Liu H, Zhang J, Li D, <b>Yan L</b>, Jiu J, Li R, Li X, Li S, Jia L, Liu H, Ren Y, Liu X, Li JJ*, Wang B*</div>
+  </div>
+  <div class="if"><b>5.9</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="other" data-y="2024">
+  <div class="role">合作作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.18632/aging.205396" target="_blank" rel="noopener">Gut microbial community and fecal metabolomic signatures in different types of osteoporosis animal models</a></div>
+    <div class="pj"><b>Aging</b> 16(2):1192–1217</div>
+    <div class="pa">Qiao X†, Li X†, Wang Z†, Feng Y†, Wei X, Li L, Pan Y, Zhang K, Zhou R, <b>Yan L</b>, Li P, Xu C, Lv Z*, Tian Z*</div>
+  </div>
+  <div class="if"><b>5.2</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="onc" data-y="2024">
+  <div class="role">合作作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.18632/aging.205428" target="_blank" rel="noopener">Cisplatin and doxorubicin chemotherapy alters gut microbiota in a murine osteosarcoma model</a></div>
+    <div class="pj"><b>Aging</b> 16(2):1336–1351</div>
+    <div class="pa">Tian Z†, Qiao X†, Wang Z, Li X, Pan Y, Wei X, Lv Z, Li P, Du Q, Wei W, <b>Yan L</b>, Chen S, Xu C, Feng Y*, Zhou R*</div>
+  </div>
+  <div class="if"><b>5.2</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="oa" data-y="2025">
+  <div class="role">合作作者<span class="y">2025</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1002/ksa.70191" target="_blank" rel="noopener">Deep contrastive learning improves identification of early-stage knee osteoarthritis across multicohort X-ray datasets</a></div>
+    <div class="pj"><b>Knee Surgery, Sports Traumatology, Arthroscopy</b> 34(1):362–369</div>
+    <div class="pa">Jia L†, Du G†, Fan Z†, Li X, Liu H, Zhang J, Li D, <b>Yan L</b>, Jiu J, Li R, Li S, Yang Y, Liu H, Ren Y, Liu X, Li JJ, Zhang Y*, Lin J*, Wang B*</div>
+  </div>
+  <div class="if"><b>5.0</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="onc" data-y="2024">
+  <div class="role">合作作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.18632/aging.205951" target="_blank" rel="noopener">Characterization of the gut microbiota and fecal metabolome in the osteosarcoma mouse model</a></div>
+    <div class="pj"><b>Aging</b> 16(13):10841–10859</div>
+    <div class="pa">Li Y†, Qiao X†, Feng Y†, Zhou R, Zhang K, Pan Y, Yan T, <b>Yan L</b>, Yang S, Wei X, Li P, Xu C, Lv Z*, Tian Z*</div>
+  </div>
+  <div class="if"><b>3.9</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="oa" data-y="2022">
+  <div class="role">合作作者<span class="y">2022</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1007/s40258-022-00717-0" target="_blank" rel="noopener">Cost effectiveness of pharmacological management for osteoarthritis: a systematic review</a></div>
+    <div class="pj"><b>Applied Health Economics and Health Policy</b> 20(3):351–370</div>
+    <div class="pa">Shi J†, Fan K†, <b>Yan L</b>, Fan Z, Li F, Wang G, Liu H, Liu P, Yu H, Li JJ*, Wang B*</div>
+  </div>
+  <div class="if"><b>3.686</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="onc" data-y="2022">
+  <div class="role">合作作者<span class="y">2022</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1186/s12920-022-01419-1" target="_blank" rel="noopener">Transcriptomics and metabolomics reveal changes in the regulatory mechanisms of osteosarcoma under different culture methods in vitro</a></div>
+    <div class="pj"><b>BMC Medical Genomics</b> 15:265</div>
+    <div class="pa">Yang S†, Tian Z†, Feng Y†, Zhang K, Pan Y, Li Y, Wang Z, Wei W, Qiao X, Zhou R, <b>Yan L</b>, Li Q, Guo H, Yuan J, Li P, Lv Z*</div>
+  </div>
+  <div class="if"><b>3.622</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="onc" data-y="2025">
+  <div class="role">合作作者<span class="y">2025</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1186/s12885-025-13449-w" target="_blank" rel="noopener">Predicting breast cancer prognosis using PR and PIK3CA biomarkers: a comparative analysis of diagnostic groups</a></div>
+    <div class="pj"><b>BMC Cancer</b> 25:68</div>
+    <div class="pa">Feng Y†, Song Q†, <b>Yan L</b>, Li R, Yang M, Bu P*, Lian J*</div>
+  </div>
+  <div class="if"><b>3.4</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="oa" data-y="2022">
+  <div class="role">合作作者<span class="y">2022</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1111/1756-185X.14306" target="_blank" rel="noopener">Preclinical studies and clinical trials on mesenchymal stem cell therapy for knee osteoarthritis: a systematic review on models and cell doses</a></div>
+    <div class="pj"><b>International Journal of Rheumatic Diseases</b> 25(5):532–562</div>
+    <div class="pa">Wang G†, Xing D†, Liu W†, Zhu Y, Liu H, <b>Yan L</b>, Fan K, Liu P, Yu B, Li JJ*, Wang B*</div>
+  </div>
+  <div class="if"><b>2.558</b><span>IF</span></div></li>
+<li class="pub " data-g="co" data-role="C" data-cat="oa" data-y="2020">
+  <div class="role">合作作者<span class="y">2020</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.1007/s43465-020-00177-5" target="_blank" rel="noopener">Risk factors with multilevel evidence for dislocation in patients with femoral neck fractures after hip hemiarthroplasty: a systematic review</a></div>
+    <div class="pj"><b>Indian Journal of Orthopaedics</b> 54(6):795–804</div>
+    <div class="pa">Wang B†, Liu H†, Zhu Y, <b>Yan L</b>, Li JJ, Zhao B*</div>
+  </div>
+  <div class="if"><b>1.251</b><span>IF</span></div></li>
+<li class="yh" data-g="zh"><h3>中文核心期刊</h3></li>
+<li class="pub " data-g="zh" data-role="F" data-cat="oa" data-y="2021">
+  <div class="role">第一作者<span class="y">2021</span></div>
+  <div>
+    <div class="pt">Efficacy of total hip arthroplasty by direct anterior and direct lateral approach: a systematic review</div>
+    <div class="pj"><b>中国循证医学杂志</b> 21(10):1162–1167</div>
+    <div class="pa"><b>Yan L</b>†, Liu H†, Shi J, Xing D, Li C, Lv Z*, Wang B*</div>
+  </div>
+  <div class="if"></div></li>
+<li class="pub " data-g="zh" data-role="C" data-cat="regen" data-y="2025">
+  <div class="role">合作作者<span class="y">2025</span></div>
+  <div>
+    <div class="pt">Three-dimensional gelatin microspheres loaded with human umbilical cord mesenchymal stem cells for chronic tendinopathy repair</div>
+    <div class="pj"><b>中国组织工程研究</b> 29(7):1356–1362</div>
+    <div class="pa">Li D, Jiu J, Liu H, <b>Yan L</b>, Li S, Wang B*</div>
+  </div>
+  <div class="if"></div></li>
+<li class="pub " data-g="zh" data-role="C" data-cat="other" data-y="2024">
+  <div class="role">合作作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt">Quality assessment of Chinese clinical practice guidelines and consensus in orthopedics</div>
+    <div class="pj"><b>中国循证医学杂志</b> 24(7):832–837</div>
+    <div class="pa">Fan Z†, Li D†, <b>Yan L</b>, Xing D, Zhou Q*, Wang B*</div>
+  </div>
+  <div class="if"></div></li>
+<li class="pub " data-g="zh" data-role="C" data-cat="onc" data-y="2024">
+  <div class="role">合作作者<span class="y">2024</span></div>
+  <div>
+    <div class="pt"><a href="https://doi.org/10.3760/cma.j.cn112151-20240531-00361" target="_blank" rel="noopener">Biological characteristics of triple negative breast cancer with low expression of HER2</a></div>
+    <div class="pj"><b>中华病理学杂志</b> 53(9):898–904</div>
+    <div class="pa">Lian J, Li RQ, <b>Yan L</b>, Bu P, Wang HW, Xi YF*</div>
+  </div>
+  <div class="if"></div></li>
+<li class="pub " data-g="zh" data-role="C" data-cat="regen" data-y="2023">
+  <div class="role">合作作者<span class="y">2023</span></div>
+  <div>
+    <div class="pt">Functional characteristics of three-dimensional biological scaffolds for repairing injured spinal cord</div>
+    <div class="pj"><b>中国组织工程研究</b> 27(30):4876–4882</div>
+    <div class="pa">Jiu J†, Liu H†, Wang G, Li D, <b>Yan L</b>, Zhao B*, Wang B*</div>
+  </div>
+  <div class="if"></div></li>
+<li class="pub " data-g="zh" data-role="C" data-cat="other" data-y="2022">
+  <div class="role">合作作者<span class="y">2022</span></div>
+  <div>
+    <div class="pt">Interpretation and evaluation of the Chinese guideline for diagnosis and treatment of osteoarthritis (2021 edition)</div>
+    <div class="pj"><b>中国循证医学杂志</b> 22(6):621–627</div>
+    <div class="pa">Fan Z†, Wang G†, Li C, Qian D, Zhang J, Li D, <b>Yan L</b>, Xing D*, Wang B*</div>
+  </div>
+  <div class="if"></div></li>
+</ol>
+<p class="legend">"一作 / 通讯"指第一作者、共同第一作者或通讯作者。另有实用新型专利 1 项（CN 224776837 U，共同发明人），膝骨关节炎机器学习评估软件著作权 2 项。</p>
+</div></main>
+
+<footer><div class="wrap"><span>© 2026 闫磊 Lei Yan</span><span>2026 年 11 月更新 · <a href="publications.html" lang="en">English</a></span></div></footer>
+
+<script>
+(function(){
+  var chips=document.querySelectorAll('.chip'), items=document.querySelectorAll('li.pub'), years=document.querySelectorAll('li.yh'), count=document.getElementById('count');
+  function apply(f){
+    var n=0, seen={};
+    items.forEach(function(li){
+      var show = f==='all' || (f==='lead' ? li.classList.contains('lead') : li.dataset.cat===f);
+      li.hidden=!show; if(show){n++; seen[li.dataset.y]=true;}
+    });
+    years.forEach(function(y){ y.hidden = !Array.prototype.some.call(items,function(li){return !li.hidden && li.dataset.g===y.dataset.g}); });
+    count.textContent = n + ' 篇';
+    chips.forEach(function(c){ c.setAttribute('aria-pressed', c.dataset.f===f ? 'true':'false'); });
+    try{ history.replaceState(null,'', f==='all' ? location.pathname : '#'+f); }catch(e){}
+  }
+  chips.forEach(function(c){ c.addEventListener('click', function(){ apply(c.dataset.f); }); });
+  var h=(location.hash||'').slice(1);
+  apply(/^(lead|spine|oa|regen|onc|other)$/.test(h)?h:'all');
+})();
+</script>
+</body>
+</html>
