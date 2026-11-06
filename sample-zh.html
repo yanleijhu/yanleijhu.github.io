@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>闫磊 · 个人主页</title>
+<meta name="description" content="闫磊，约翰斯·霍普金斯大学医学院生物医学工程系博士研究生，研究方向为脊柱生物学、腰痛与椎间盘退变。">
+<style>
+/* 版式：百科词条式。正文单栏 + 右侧信息框；顶部目录；分节标题左侧色条。刻意朴素，系统中文字体。 */
+:root{
+  --bg:#ffffff; --ink:#333333; --ink-2:#555555; --muted:#8a8a8a; --line:#e6e6e6;
+  --link:#136ec2; --bar:#4f9cee; --box:#f5f7fa; --box-line:#e3e8ef;
+  --f:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Source Han Sans SC",system-ui,sans-serif;
+  color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.85}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{margin:0;font-weight:600;color:#222}
+p{margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* 顶栏 */
+.top{border-bottom:1px solid var(--line);background:#fff}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.top .site{font-size:15px;color:var(--ink-2)}
+.top .site b{color:#222;font-size:17px;margin-right:8px}
+.top nav{display:flex;gap:20px;font-size:14px}
+
+/* 词条头 */
+.entry{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:40px;padding-block:28px 48px}
+.main{min-width:0}
+.title{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.title h1{font-size:34px;letter-spacing:.02em}
+.title span{font-size:15px;color:var(--muted)}
+.lemma{color:var(--ink-2);font-size:15px;margin-bottom:22px}
+.summary p+p{margin-top:10px}
+.summary{margin-bottom:26px}
+
+/* 信息框 */
+.infobox{background:var(--box);border:1px solid var(--box-line);padding:14px;align-self:start;position:sticky;top:16px}
+.infobox img{display:block;width:100%;max-width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}
+.infobox .cap{font-size:12px;color:var(--muted);text-align:center;margin:6px 0 10px}
+.infobox h3{font-size:14px;padding:6px 0;border-bottom:1px solid var(--box-line);margin-bottom:6px}
+.infobox dl{margin:0;display:grid;grid-template-columns:5.2em minmax(0,1fr);row-gap:6px;column-gap:10px;font-size:13.5px;line-height:1.6}
+.infobox dt{color:var(--muted);text-align-last:justify}
+.infobox dd{margin:0;color:var(--ink)}
+
+/* 目录 */
+.toc{border:1px solid var(--line);padding:14px 18px;margin-bottom:30px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:start}
+.toc .lab{font-size:15px;font-weight:600;color:#222;writing-mode:vertical-rl;letter-spacing:.4em;border-right:1px solid var(--line);padding-right:12px}
+.toc ol{margin:0;padding:0;list-style:none;columns:2;column-gap:28px;font-size:14px}
+.toc li{break-inside:avoid;padding:2px 0}
+.toc li .n{display:inline-block;width:1.6em;color:var(--muted)}
+.toc li.sub{padding-left:1.6em;font-size:13px}
+
+/* 分节 */
+section.s{margin-bottom:34px}
+section.s>h2{font-size:20px;padding:6px 0 6px 12px;border-left:4px solid var(--bar);border-bottom:1px solid var(--line);margin-bottom:14px;display:flex;align-items:baseline;gap:8px}
+section.s>h2 .n{color:var(--muted);font-weight:400;font-size:16px}
+section.s h3{font-size:16px;margin:16px 0 8px}
+section.s p+p{margin-top:10px}
+.indent p{text-indent:2em}
+
+/* 表格 */
+table.t{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+table.t th,table.t td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+table.t th{background:var(--box);font-weight:600;color:#222;white-space:nowrap}
+table.t td.c{white-space:nowrap;color:var(--ink-2)}
+.tbox{overflow-x:auto}
+
+/* 论文 */
+ol.refs{margin:6px 0 0;padding-left:1.8em;font-size:14px}
+ol.refs li{padding:5px 0}
+ol.refs .j{font-style:italic}
+ol.refs .tag{font-size:12px;color:#c0392b;border:1px solid #f0c4be;padding:0 5px;margin-left:6px;white-space:nowrap}
+.more{margin-top:10px;font-size:14px}
+
+/* 图片 */
+.pics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
+.pics figure{margin:0;min-width:0}
+.pics img{display:block;width:100%;max-width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border:1px solid var(--line)}
+.pics figcaption{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5}
+figure.wide{margin:12px 0 0}
+figure.wide img{display:block;width:100%;max-width:100%;height:auto;aspect-ratio:21/9;object-fit:cover;border:1px solid var(--line)}
+figure.wide figcaption{font-size:12.5px;color:var(--muted);margin-top:4px}
+
+ul.plain{margin:6px 0 0;padding-left:1.4em;font-size:14px}
+ul.plain li{padding:2px 0}
+
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer .wrap{padding-block:18px 32px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+@media (max-width:860px){
+  .entry{grid-template-columns:1fr;gap:24px}
+  .infobox{position:static;order:-1;max-width:420px}
+  .infobox img{max-width:180px;margin:0 auto}
+  .toc ol{columns:1}
+  .pics{grid-template-columns:1fr 1fr}
+}
+@media (max-width:480px){.pics{grid-template-columns:1fr}.top nav{gap:12px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="site"><b>闫磊</b>个人主页</div>
+  <nav aria-label="站点"><a href="#lunwen">论文</a><a href="#lianxi">联系</a><a href="index.html" lang="en">English</a></nav>
+</div></header>
+
+<main class="wrap entry">
+  <div class="main">
+    <div class="title"><h1>闫磊</h1><span>Lei Yan</span></div>
+    <p class="lemma">约翰斯·霍普金斯大学医学院博士研究生、执业医师</p>
+
+    <div class="summary indent">
+      <p>闫磊，男，山西人，约翰斯·霍普金斯大学医学院生物医学工程系博士研究生，导师为曹旭教授。本科与硕士毕业于山西医科大学临床医学"5+3"一体化专业，硕士方向为骨科学，具有中国执业医师资格。</p>
+      <p>主要研究方向为脊柱生物学与腰痛，关注腰椎失稳条件下椎间盘纤维环的退变与重塑。已发表同行评议论文 45 篇，其中 SCI 收录 39 篇，以第一、共同第一或通讯作者身份发表 21 篇，代表作发表于 <i>The BMJ</i>、<i>JAMA Network Open</i> 等期刊，并参与发表 <i>Nature Communications</i> 论文。</p>
+    </div>
+
+    <nav class="toc" aria-label="目录">
+      <div class="lab">目录</div>
+      <ol>
+        <li><span class="n">1</span><a href="#jingli">人物经历</a></li>
+        <li><span class="n">2</span><a href="#yanjiu">研究方向</a></li>
+        <li class="sub"><a href="#yanjiu-1">纤维环与腰痛</a></li>
+        <li class="sub"><a href="#yanjiu-2">肌肉骨骼疾病循证研究</a></li>
+        <li><span class="n">3</span><a href="#lunwen">主要论文</a></li>
+        <li><span class="n">4</span><a href="#zhuanli">专利与软件著作权</a></li>
+        <li><span class="n">5</span><a href="#renzhi">学术任职</a></li>
+        <li><span class="n">6</span><a href="#rongyu">荣誉奖励</a></li>
+        <li><span class="n">7</span><a href="#baogao">会议报告</a></li>
+        <li><span class="n">8</span><a href="#lianxi">联系方式</a></li>
+      </ol>
+    </nav>
+
+    <section class="s" id="jingli">
+      <h2><span class="n">1</span>人物经历</h2>
+      <div class="indent">
+        <p>2016 年 9 月，进入山西医科大学临床医学专业学习，就读"5+3"一体化培养项目；2021 年本科毕业，获医学学士学位。</p>
+        <p>2021 年 9 月，进入山西医科大学第二医院骨科攻读硕士学位，师从吕智教授，同时完成骨科住院医师规范化培训；期间与浙江大学医学院附属第一医院王斌教授团队开展循证医学合作研究。2024 年 6 月硕士毕业，综合测评专业第一，获评 2024 届优秀毕业生第一名。</p>
+        <p>2024 年 8 月，赴美加入约翰斯·霍普金斯大学医学院曹旭教授实验室，同年 9 月起攻读生物医学工程博士学位。</p>
+      </div>
+      <div class="tbox"><table class="t">
+        <thead><tr><th>时间</th><th>院校</th><th>专业 / 学位</th></tr></thead>
+        <tbody>
+          <tr><td class="c">2024 – 至今</td><td>约翰斯·霍普金斯大学医学院</td><td>生物医学工程，博士在读</td></tr>
+          <tr><td class="c">2021 – 2024</td><td>山西医科大学第二医院</td><td>骨科学，医学硕士</td></tr>
+          <tr><td class="c">2016 – 2021</td><td>山西医科大学</td><td>临床医学，医学学士</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="s" id="yanjiu">
+      <h2><span class="n">2</span>研究方向</h2>
+      <h3 id="yanjiu-1">纤维环与腰痛</h3>
+      <div class="indent">
+        <p>腰痛是全球伤残损失寿命年的首位原因，2020 年全球患者约 6.19 亿人，预计 2050 年将超过 8 亿（GBD 2021，<i>Lancet Rheumatology</i> 2023）。绝大多数腰痛属于非特异性腰痛，椎间盘退变是其主要结构基础，而纤维环是椎间盘结构破坏与神经长入的交汇部位。</p>
+        <p>博士期间，利用小鼠腰椎失稳模型，研究纤维环细胞、细胞外基质及支配神经在椎间盘退变过程中的变化，以及这些变化与疼痛行为的关系。研究手段包括遗传小鼠模型、谱系示踪、共聚焦与三维成像、原代细胞培养及行为学检测。</p>
+      </div>
+      <h3 id="yanjiu-2">肌肉骨骼疾病循证研究</h3>
+      <div class="indent">
+        <p>围绕骨关节炎、关节置换、前交叉韧带重建和腰椎融合等临床问题开展证据整合研究。其中关于膝骨关节炎运动疗法的研究纳入 217 项随机对照试验、15,684 名受试者，2025 年发表于 <i>The BMJ</i>，被 ACP Journal Club 收录，并获 CNN 报道。</p>
+      </div>
+    </section>
+
+    <section class="s" id="lunwen">
+      <h2><span class="n">3</span>主要论文</h2>
+      <p>截至 2026 年 11 月，发表同行评议论文 45 篇（SCI 39 篇），以下为代表作（† 共同第一作者，* 通讯作者）。</p>
+      <ol class="refs">
+        <li><b>Yan L</b>†, Li D†, Xing D†, … Hu Y*, Ge L*, Wang B*. Comparative efficacy and safety of exercise modalities in knee osteoarthritis: systematic review and network meta-analysis. <span class="j">The BMJ</span>, 2025, 391: e085242. <span class="tag">第一作者</span></li>
+        <li><b>Yan L</b>†, Ge L†, Dong S, … Xing D*, Wang B*. Evaluation of comparative efficacy and safety of surgical approaches for total hip arthroplasty. <span class="j">JAMA Network Open</span>, 2023, 6(1): e2253942. <span class="tag">第一作者</span></li>
+        <li><b>Yan L</b>†, Li D†, Li S†, … Liu W*, Du Y*, Wang B*. Exosomes derived from 3D-cultured MSCs alleviate knee osteoarthritis by promoting M2 macrophage polarization. <span class="j">Chemical Engineering Journal</span>, 2024, 497: 154432. <span class="tag">第一作者</span></li>
+        <li><b>Yan L</b>†, Zhou R†, Feng Y†, … Sun X*, Lv Z*, Tian Z*. MiR-134-5p inhibits the malignant phenotypes of osteosarcoma via ITGB1/MMP2/PI3K/Akt pathway. <span class="j">Cell Death Discovery</span>, 2024, 10: 193. <span class="tag">第一作者</span></li>
+        <li>Li R†, <b>Yan L</b>†, Jiu J, … Wang B*. PSME2 offers value as a biomarker of M1 macrophage infiltration in pan-cancer and inhibits osteosarcoma malignant phenotypes. <span class="j">International Journal of Biological Sciences</span>, 2024, 20(4): 1452–1470. <span class="tag">共同第一作者</span></li>
+        <li>Pan D, Shen M, … <b>Yan L</b>, … Cao X*. Dorsal horn DCC amplification loop induced by endplate osteoclasts generates chronic nociplastic low back pain in male mice. <span class="j">Nature Communications</span>, 2026, 17: 8631.</li>
+      </ol>
+      <p class="more"><a href="publications-zh.html">查看全部 45 篇论文 ›</a></p>
+    </section>
+
+    <section class="s" id="zhuanli">
+      <h2><span class="n">4</span>专利与软件著作权</h2>
+      <ul class="plain">
+        <li>实用新型专利：一种用于关节镜手术中交叉韧带重建的测量装置，CN 224776837 U，2026 年授权（共同发明人）。</li>
+        <li>软件著作权：基于深度学习的膝骨关节炎平片自动化诊断系统 V1.0，2023SR1629906。</li>
+        <li>软件著作权：基于机器学习的膝骨关节炎自测系统 V1.0，2024SR0602654。</li>
+      </ul>
+    </section>
+
+    <section class="s" id="renzhi">
+      <h2><span class="n">5</span>学术任职</h2>
+      <ul class="plain">
+        <li>Frontiers 系列期刊 Handling Editor</li>
+        <li>2026 年为 23 本 SCI 期刊审稿 32 篇，包括 <i>International Journal of Nanomedicine</i>、<i>BMC Musculoskeletal Disorders</i>、<i>Frontiers in Immunology</i>、<i>Osteoporosis International</i>、<i>Maturitas</i>、<i>Research</i> 等。</li>
+      </ul>
+    </section>
+
+    <section class="s" id="rongyu">
+      <h2><span class="n">6</span>荣誉奖励</h2>
+      <div class="tbox"><table class="t">
+        <thead><tr><th>年份</th><th>荣誉</th><th>颁发单位</th></tr></thead>
+        <tbody>
+          <tr><td class="c">2024</td><td>青年五四奖章</td><td>山西医科大学</td></tr>
+          <tr><td class="c">2024</td><td>2024 届优秀毕业生（第一名）</td><td>山西医科大学</td></tr>
+          <tr><td class="c">2023</td><td>研究生国家奖学金</td><td>教育部</td></tr>
+          <tr><td class="c">2023</td><td>第五届"大学生年度人物"</td><td>山西医科大学</td></tr>
+          <tr><td class="c">2020</td><td>"互联网+"大学生创新创业大赛省级金奖（项目负责人）</td><td>山西省</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="s" id="baogao">
+      <h2><span class="n">7</span>会议报告</h2>
+      <p>累计在中华医学会骨科学术会议（COA）、中国医师协会骨科医师年会（CAOS）、中国医师协会运动医学医师年会等全国性学术会议作大会发言 8 次、壁报交流 17 次，并于 2026 年 OARSI 世界骨关节炎大会进行壁报交流。</p>
+      <figure class="wide"><img src="talk.jpg" alt="闫磊在第十五届中国医师协会骨科医师年会作大会发言" width="1600" height="686" loading="lazy"><figcaption>2024 年，第十五届中国医师协会骨科医师年会大会发言</figcaption></figure>
+      <div class="pics">
+        <figure><img src="talk-coa-2023a.jpg" alt="第十五届 COA 大会发言" width="1200" height="900" loading="lazy"><figcaption>2023 年，中华医学会第二十二届骨科学术会议暨第十五届 COA</figcaption></figure>
+        <figure><img src="talk-jinyang-2023.jpg" alt="晋阳骨科基础研究论坛大会发言" width="1200" height="900" loading="lazy"><figcaption>2023 年，晋阳骨科基础研究论坛</figcaption></figure>
+        <figure><img src="talk-xian-2023a.jpg" alt="全国关节外科学术大会发言" width="1200" height="900" loading="lazy"><figcaption>2023 年，中华医学会全国关节外科学术大会</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="s" id="lianxi">
+      <h2><span class="n">8</span>联系方式</h2>
+      <ul class="plain">
+        <li>邮箱：lyan22@jh.edu</li>
+        <li>ORCID：<a href="https://orcid.org/0000-0001-5154-8656" target="_blank" rel="noopener">0000-0001-5154-8656</a></li>
+        <li>Google Scholar：<a href="https://scholar.google.com/citations?user=ax3KaksAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener">闫磊的学术主页</a></li>
+        <li>地址：Department of Biomedical Engineering, Johns Hopkins University School of Medicine, Baltimore, Maryland, USA</li>
+      </ul>
+    </section>
+  </div>
+
+  <aside class="infobox" aria-label="基本信息">
+    <img src="portrait.jpg" alt="闫磊" width="800" height="1000">
+    <div class="cap">闫磊</div>
+    <h3>基本信息</h3>
+    <dl>
+      <dt>中文名</dt><dd>闫磊</dd>
+      <dt>外文名</dt><dd>Lei Yan</dd>
+      <dt>国籍</dt><dd>中国</dd>
+      <dt>籍贯</dt><dd>山西</dd>
+      <dt>毕业院校</dt><dd>山西医科大学</dd>
+      <dt>学位</dt><dd>医学硕士，博士在读</dd>
+      <dt>就读机构</dt><dd>约翰斯·霍普金斯大学医学院</dd>
+      <dt>导师</dt><dd>曹旭 教授</dd>
+      <dt>研究方向</dt><dd>脊柱生物学、腰痛、椎间盘退变</dd>
+      <dt>执业资格</dt><dd>中国执业医师</dd>
+      <dt>代表作品</dt><dd><i>The BMJ</i>（2025）<br><i>JAMA Network Open</i>（2023）</dd>
+    </dl>
+  </aside>
+</main>
+
+<footer><div class="wrap"><span>© 2026 闫磊</span><span>2026 年 11 月更新</span></div></footer>
+</body>
+</html>
